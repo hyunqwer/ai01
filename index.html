@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>단어 퀴즈</title>
+  <style>
+    /* 기본 스타일 설정 */
+    body {
+      font-family: "Noto Sans KR", sans-serif;
+      margin: 20px;
+      background-color: #f8f9fa;
+    }
+
+    h1 {
+      text-align: center;
+      color: #343a40;
+    }
+
+    .quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question h2 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: #495057;
+    }
+
+    label {
+      display: block;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+
+    /* 정답/오답 표시 스타일 */
+    .correct {
+      color: #28a745;
+      font-weight: bold;
+    }
+
+    .incorrect {
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    .result-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .check-button {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: #ffffff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .check-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>단어 퀴즈</h1>
+  <div class="quiz-container">
+    <!-- 문항 1 -->
+    <div class="question" id="question1">
+      <h2>1. "Apple"의 의미는 무엇일까요?</h2>
+      <label>
+        <input type="radio" name="q1" value="사과">
+        사과
+      </label>
+      <label>
+        <input type="radio" name="q1" value="바나나">
+        바나나
+      </label>
+      <label>
+        <input type="radio" name="q1" value="포도">
+        포도
+      </label>
+    </div>
+
+    <!-- 문항 2 -->
+    <div class="question" id="question2">
+      <h2>2. "Morning"의 반대말은 무엇일까요?</h2>
+      <label>
+        <input type="radio" name="q2" value="오후">
+        오후
+      </label>
+      <label>
+        <input type="radio" name="q2" value="저녁">
+        저녁
+      </label>
+      <label>
+        <input type="radio" name="q2" value="밤">
+        밤
+      </label>
+    </div>
+
+    <!-- 문항 3 -->
+    <div class="question" id="question3">
+      <h2>3. "Library"는 어떤 장소일까요?</h2>
+      <label>
+        <input type="radio" name="q3" value="공원">
+        공원
+      </label>
+      <label>
+        <input type="radio" name="q3" value="도서관">
+        도서관
+      </label>
+      <label>
+        <input type="radio" name="q3" value="헬스장">
+        헬스장
+      </label>
+    </div>
+
+    <button class="check-button" onclick="checkAnswers()">정답 확인하기</button>
+
+    <!-- 정답/오답 결과 표시 영역 -->
+    <div class="result-container" id="result"></div>
+  </div>
+
+  <script>
+    // 정답을 미리 설정해둡니다. key: 문항 번호, value: 정답 문자열
+    const answers = {
+      q1: "사과",
+      q2: "밤",
+      q3: "도서관"
+    };
+
+    function checkAnswers() {
+      let score = 0; // 정답 개수
+      let totalQuestions = Object.keys(answers).length;
+
+      // 각 문항에 대해 사용자의 선택을 확인
+      for (let key in answers) {
+        const questionElement = document.getElementById(key.replace("q", "question"));
+        const checkedOption = document.querySelector(`input[name="${key}"]:checked`);
+
+        if (checkedOption) {
+          // 사용자가 체크한 값과 정답 비교
+          if (checkedOption.value === answers[key]) {
+            score++;
+            questionElement.classList.remove("incorrect");
+            questionElement.classList.add("correct");
+          } else {
+            questionElement.classList.remove("correct");
+            questionElement.classList.add("incorrect");
+          }
+        } else {
+          // 체크하지 않은 문항은 오답으로 처리
+          questionElement.classList.remove("correct");
+          questionElement.classList.add("incorrect");
+        }
+      }
+
+      // 결과 메시지
+      const resultMessage = `총 ${totalQuestions}문항 중 ${score}문항을 맞추셨습니다.`;
+      const resultDiv = document.getElementById("result");
+
+      resultDiv.textContent = resultMessage;
+
+      // 색상을 구분해주고 싶다면
+      if (score === totalQuestions) {
+        resultDiv.style.color = "#28a745"; // 모두 정답일 경우 초록색
+      } else {
+        resultDiv.style.color = "#dc3545"; // 오답이 있을 경우 붉은색
+      }
+    }
+  </script>
+</body>
+</html>
